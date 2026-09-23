@@ -1,0 +1,121 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import PowerBalance from "../components/PowerBalance.tsx";
+
+const factions = [
+  {
+    id: "hoangquan",
+    name: "Phe Hoàng Quan",
+    motto: "Trung thần giữ ngai, không thần phục ai khác.",
+    goal: "Bảo vệ quyền lực tuyệt đối của Hoàng đế hiện tại, giữ vững trật tự Đại Phạn Quốc.",
+    leader: "Đại Tướng Quân Cố Thanh Hành",
+    color: "var(--primary)",
+    side: "Hoàng Quan"
+  },
+  {
+    id: "tranhcung",
+    name: "Phe Tranh Cung",
+    motto: "Hai cánh hùng ưng, một ngai vàng — đâu ai chịu nhường.",
+    goal: "Hỗ trợ các Hoàng tử tiềm năng đoạt vị trí Chữ Quân. Hiện có 2 cánh chính.",
+    branches: [
+      { name: "Trận hình Đại Hoàng Tử (Lý Trường Ninh)", desc: "Thiên về Võ tướng & Biên cương. Lực lượng tinh nhuệ, hành động quyết đoán." },
+      { name: "Trận hình Tam Hoàng Tử", desc: "Thiên về Văn quan & Môn phiệt lâu đời. Mưu lược thâm sâu, tấu chương bền bỉ." }
+    ],
+    color: "var(--accent)"
+  },
+  {
+    id: "trunglap",
+    name: "Phe Trung Lập · Môn Phiệt",
+    motto: "Cây không đổ, ngọn mới rơi. Chúng ta chờ ngày đó.",
+    goal: "Các đại gia tộc lâu đời chỉ quan tâm đến lợi ích dòng họ. Đứng ngoài quan sát, đặt cược phút cuối.",
+    leader: "Tả Thừa Tướng Tô Vãn Ninh",
+    color: "var(--muted-foreground)"
+  },
+  {
+    id: "huyenmon",
+    name: "Huyền Môn · Tiêu Cục",
+    motto: "Chúng ta không phục vụ ngai vàng — chúng ta phục vụ người ngồi trên ngai.",
+    goal: "Hệ thống tình báo và sát thủ bí mật. Về lý thuộc Hoàng đế, nhưng thực tế trung thành với quyền lực.",
+    leader: "Chưởng Tiêu Cục Tiết Ứng Hàn",
+    color: "var(--brand-dark)"
+  }
+];
+---
+
+<Base
+  title="Phe Phái · Cán Cân Quyền Lực — Phạn Huyền Tiêu"
+  description="Bốn phe phái đang tranh chấp quyền lực trong Đại Phạn Quốc: Hoàng Quan, Tranh Cung, Trung Lập và Huyền Môn. Cán Cân Quyền Lực cập nhật theo arc."
+>
+  <Header />
+
+  <main class="bg-background text-foreground">
+    <section class="py-20 md:py-28 text-center max-w-4xl mx-auto px-6">
+      <p class="text-xs tracking-[0.4em] text-accent uppercase mb-3">Thế lực đối địch</p>
+      <h1 class="font-serif text-5xl md:text-7xl font-semibold leading-tight mb-6">
+        Bốn Phe <span class="text-primary">Cân Não</span>
+      </h1>
+      <p class="text-lg text-muted-foreground leading-relaxed">
+        Trong cung, chỉ một phe thắng. Ngoài cung, ba phe kia mưu tính cho ngày hôm sau.
+      </p>
+    </section>
+
+    <!-- POWER BALANCE -->
+    <section class="py-16 md:py-24 bg-card border-y border-border">
+      <div class="max-w-6xl mx-auto px-6">
+        <p class="text-xs tracking-[0.4em] text-accent uppercase mb-3 text-center">Tỷ lệ hiện tại</p>
+        <h2 class="font-serif text-3xl md:text-5xl font-semibold text-center mb-3">Cán Cân Quyền Lực</h2>
+        <p class="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
+          Mức độ ảnh hưởng của các phe trong Đại Phạn Quốc. Ban Quản Lý sẽ điều chỉnh sau mỗi arc / sự kiện lớn.
+        </p>
+        <PowerBalance client:visible />
+      </div>
+    </section>
+
+    <!-- PHE GRID -->
+    <section class="py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-6">
+        {factions.map((f) => (
+          <article class="bg-card border border-border rounded overflow-hidden hover:border-primary hover:-translate-y-1 transition">
+            <div class="h-2" style={`background:${f.color}`}></div>
+            <div class="p-8">
+              <div class="flex items-start justify-between mb-4">
+                <h3 class="font-serif text-2xl font-semibold">{f.name}</h3>
+              </div>
+              <p class="font-serif italic text-accent mb-4">"{f.motto}"</p>
+              <p class="text-sm leading-relaxed mb-4">{f.goal}</p>
+              {f.branches && (
+                <div class="space-y-3 mb-4 pl-4 border-l-2 border-accent">
+                  {f.branches.map((b) => (
+                    <div>
+                      <div class="text-sm font-semibold text-primary">{b.name}</div>
+                      <p class="text-xs text-muted-foreground mt-1">{b.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {f.leader && (
+                <div class="text-xs text-muted-foreground pt-3 border-t border-border">
+                  <span class="text-accent uppercase tracking-widest">Người đứng đầu: </span>
+                  <span class="text-foreground">{f.leader}</span>
+                </div>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="py-16 text-center">
+      <p class="text-muted-foreground max-w-2xl mx-auto mb-6 px-6">
+        Bạn đã chọn phe? Hãy tạo nhân vật phù hợp với phe phái — Ban Quản Lý sẽ duyệt và gửi bạn vào đúng vị trí.
+      </p>
+      <a href="/register" class="inline-flex items-center gap-2 px-10 py-5 bg-primary text-primary-foreground rounded hover:scale-105 transition shadow-2xl">
+        Nộp Hồ Sơ Phe Phái →
+      </a>
+    </section>
+  </main>
+
+  <Footer />
+</Base>

@@ -1,0 +1,64 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import KleapForm from "../components/KleapForm";
+import OCRoster from "../components/OCRoster.tsx";
+---
+
+<Base
+  title="Đăng Ký Nhân Vật · Phạn Huyền Tiêu"
+  description="Gửi hồ sơ OC cho Ban Quản Lý. Khám phá danh sách nhân vật đang hoạt động, lọc theo phe phái và mở chi tiết từng nhân vật."
+>
+  <Header />
+
+  <main class="bg-background text-foreground">
+    <section class="py-20 md:py-28 text-center max-w-4xl mx-auto px-6">
+      <p class="text-xs tracking-[0.4em] text-accent uppercase mb-3">Gia nhập</p>
+      <h1 class="font-serif text-5xl md:text-7xl font-semibold leading-tight mb-6">
+        Nộp Hồ Sơ <span class="text-primary">OC</span>
+      </h1>
+      <p class="text-lg text-muted-foreground leading-relaxed">
+        Hoàn thành 9 trường bên dưới. BQL sẽ duyệt trong vòng <strong class="text-foreground">3–5 ngày</strong> và gửi phản hồi qua liên hệ bạn cung cấp.
+      </p>
+    </section>
+
+    <section class="py-12 md:py-16 border-t border-border">
+      <div class="max-w-3xl mx-auto px-6">
+        <KleapForm
+          client:load
+          formId="oc-registration"
+          title="Hồ Sơ Nhân Vật"
+          fields={[
+            { name: "player", label: "Tên Player / Liên hệ (Discord / Zalo / Facebook)", type: "text", required: true },
+            { name: "name", label: "Họ và tên nhân vật (Hán Việt)", type: "text", required: true },
+            { name: "age_gender", label: "Tuổi & Giới tính", type: "text", required: true, placeholder: "Ví dụ: 24 · Nữ" },
+            { name: "role", label: "Chức vị / Thân phận mong muốn", type: "text", required: true, placeholder: "Ví dụ: Tam Hoàng Tử / Đức Phi / Hữu Thừa Tướng" },
+            { name: "faction", label: "Phe phái lựa chọn", type: "text", required: true, placeholder: "Hoàng Quan · Tranh Cung · Trung Lập · Huyền Môn" },
+            { name: "faceclaim", label: "Hình ảnh đại diện (URL Faceclaim)", type: "text", required: false },
+            { name: "personality", label: "Tính cách & Sở trường", type: "textarea", required: true },
+            { name: "backstory", label: "Tiểu sử ngắn (Backstory)", type: "textarea", required: true },
+            { name: "sample", label: "Bài viết mẫu (nếu có)", type: "textarea", required: false }
+          ]}
+          submitText="Gửi Hồ Sơ Cho BQL"
+        />
+        <p class="text-xs text-muted-foreground mt-6 text-center italic">
+          Sau khi gửi, bạn sẽ nhận được email xác nhận và thông báo Discord từ BQL trong vòng 3–5 ngày.
+        </p>
+      </div>
+    </section>
+
+    <section class="py-16 md:py-24 bg-card border-y border-border">
+      <div class="max-w-6xl mx-auto px-6">
+        <p class="text-xs tracking-[0.4em] text-accent uppercase mb-3 text-center">Danh sách</p>
+        <h2 class="font-serif text-3xl md:text-5xl font-semibold text-center mb-3">OC Roster · Đang Hoạt Động</h2>
+        <p class="text-center text-muted-foreground mb-12">
+          Lọc theo phe phái. Click vào từng nhân vật để xem chi tiết (Cáo Thị).
+        </p>
+        <OCRoster client:visible />
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>

@@ -1,0 +1,206 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+const royalCourt = {
+  title: "Hoàng Thất & Hậu Cung",
+  icon: "龍",
+  groups: [
+    {
+      name: "Đương Kim",
+      slots: [
+        { title: "Hoàng Đế (Huyền Minh)", slots: 1, taken: 1, desc: "Quyền lực tối thượng. Tính cách thâm trầm, khó đoán." },
+        { title: "Thái Hậu", slots: 1, taken: 0, desc: "Mẹ Hoàng đế hoặc Hoàng Hậu tiền nhiệm. Nắm hậu cung." },
+        { title: "Hoàng Hậu", slots: 1, taken: 1, desc: "Chính thất, quản lý lục cung." }
+      ]
+    },
+    {
+      name: "Hậu Cung · Phi Tần",
+      slots: [
+        { title: "Quý Phi", slots: 1, taken: 0, desc: "Tứ phi đứng đầu, ngang hàng Thái Hậu về danh phận." },
+        { title: "Đức Phi", slots: 1, taken: 1, desc: "Lâm Thù Nghi — hậu thuẫn Tam Hoàng Tử." },
+        { title: "Tiệp Dư", slots: 2, taken: 1, desc: "Các vị trí tranh sủng, hậu thuẫn các Hoàng tử nhỏ." },
+        { title: "Thường Tại / Quý Nhân", slots: 4, taken: 1, desc: "Các vị trí thấp, dễ bị thao túng." }
+      ]
+    },
+    {
+      name: "Hoàng Tử & Công Chúa",
+      slots: [
+        { title: "Đại Hoàng Tử — Lý Trường Ninh", slots: 1, taken: 1, desc: "Mẫu nghi thiên hạ, binh quyền." },
+        { title: "Nhị Hoàng Tử — Hà Cảnh Thời", slots: 1, taken: 1, desc: "Không tham vọng, được Hoàng đế yêu." },
+        { title: "Tam Hoàng Tử", slots: 1, taken: 0, desc: "Hậu thuẫn văn quan, mưu lược." },
+        { title: "Đại Công Chúa — Phùng Châu Yến", slots: 1, taken: 1, desc: "Sắp gả cho nước ngoài." }
+      ]
+    }
+  ]
+};
+
+const dynasty = {
+  title: "Triều Đình · Văn Quan & Võ Tướng",
+  icon: "相",
+  groups: [
+    {
+      name: "Văn Quan",
+      slots: [
+        { title: "Thừa Tướng (Tả/Hữu)", slots: 2, taken: 1, desc: "Đứng đầu văn quan, thao túng chính sự." },
+        { title: "Lục Bộ Thượng Thư", slots: 6, taken: 2, desc: "Lễ · Binh · Hộ · Công · Hình · Lại." },
+        { title: "Khâm Thiên Giám", slots: 1, taken: 0, desc: "Quan sát tinh tú, bói toán thiên văn." },
+        { title: "Thái Y Viện Chưởng Viện — Châu Minh Nguyệt", slots: 1, taken: 1, desc: "Nắm giữ bí mật long thể Hoàng đế." }
+      ]
+    },
+    {
+      name: "Võ Tướng",
+      slots: [
+        { title: "Đại Tướng Quân — Cố Thanh Hành", slots: 1, taken: 1, desc: "Trấn thủ Vân Môn Quan." },
+        { title: "Thị Vệ Trưởng Hoàng Thành", slots: 1, taken: 0, desc: "Bảo vệ Càn Thanh Điện, tính mạng Hoàng đế." },
+        { title: "Phó Tướng Biên Cương", slots: 3, taken: 1, desc: "Hỗ trợ Đại Tướng Quân." }
+      ]
+    }
+  ]
+};
+
+const shadow = {
+  title: "Thế Lực Trong Bóng Tối · Huyền Môn",
+  icon: "影",
+  groups: [
+    {
+      name: "Tiêu Cục & Ngầm Tộc",
+      slots: [
+        { title: "Chưởng Tiêu Cục — Tiết Ứng Hàn", slots: 1, taken: 1, desc: "Tình báo bí mật trung thành với Hoàng đế." },
+        { title: "Phó Chưởng Tiêu Cục", slots: 2, taken: 0, desc: "Điều phối các chi nhánh." },
+        { title: "Sát Thủ Cấp Cao", slots: 4, taken: 1, desc: "Chuyên ám sát chính trị, đối tượng chính là phe đối địch." }
+      ]
+    },
+    {
+      name: "Gián Điệp & Giang Hồ",
+      slots: [
+        { title: "Gián Điệp Cài Trong Triều", slots: 5, taken: 2, desc: "Giả danh quan lại, hoặc nằm vùng tại hậu cung." },
+        { title: "Chủ Tửu Lầu", slots: 2, taken: 1, desc: "Nơi giang hồ gặp triều đình, bán thông tin." },
+        { title: "Thu Thập Tin · Đồn Thuyết", slots: 6, taken: 3, desc: "Mạng lưới tai mắt ở đầu đường cuối phố." }
+      ]
+    }
+  ]
+};
+
+const glossary = [
+  { term: "Trẫm", meaning: "Hoàng đế tự xưng với quần thần." },
+  { term: "Bổn cung", meaning: "Phi tần / Hoàng Hậu tự xưng với hạ nhân." },
+  { term: "Nô tì / Thần", meaning: "Hạ nhân hoặc quan viên tự xưng với bề trên." },
+  { term: "Lão thần", meaning: "Quan viên lớn tuổi tự xưng, thể hiện sự khiêm nhường." },
+  { term: "Chữ Quân", meaning: "Hoàng tử được lập làm Thái tử, người thừa kế ngai vàng." },
+  { term: "Khâm Thiên Giám", meaning: "Cơ quan chuyên bói toán, thiên văn, chọn ngày." },
+  { term: "Tiêu Cục", meaning: "Tổ chức tình báo / sát thủ bí mật phục vụ Hoàng đế hoặc phe phái." },
+  { term: "Tráp", meaning: "Hộp sơn mài đựng thư tín, vật quý, dấu triện." },
+  { term: "Càn Thanh Điện", meaning: "Điện thờ chính, nơi Hoàng đế thiên triều." },
+  { term: "Hựu Uyển", meaning: "Vườn sau hậu cung, nơi Phi tần nghỉ chân." },
+  { term: "Chữ Hán", meaning: "Danh xưng văn hóa, kính ngữ dành cho Hoàng tử." }
+];
+
+const sections = [royalCourt, dynasty, shadow];
+
+function renderWithGlossary(text: string, glos: { term: string; meaning: string }[]): string {
+  if (!text) return "";
+  let out = text;
+  for (const g of glos) {
+    const escaped = g.term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const re = new RegExp(`(${escaped})`, "g");
+    out = out.replace(
+      re,
+      `<span class="text-accent underline decoration-dotted underline-offset-4 cursor-help" data-term="${g.term.replace(/"/g, "&quot;")}" data-meaning="${g.meaning.replace(/"/g, "&quot;")}">$1</span>`
+    );
+  }
+  return out;
+}
+---
+
+<Base
+  title="Thân Phận & Vị Trí · Phạn Huyền Tiêu"
+  description="Danh sách đầy đủ các vị trí trong group roleplay Phạn Huyền Tiêu: Hoàng Thất, Hậu Cung, Văn Quan, Võ Tướng và thế lực Huyền Môn. Từ điển xưng hô cổ đại tích hợp."
+>
+  <Header />
+
+  <main class="bg-background text-foreground">
+    <section class="py-20 md:py-28 text-center max-w-4xl mx-auto px-6">
+      <p class="text-xs tracking-[0.4em] text-accent uppercase mb-3">Hệ thống vị trí</p>
+      <h1 class="font-serif text-5xl md:text-7xl font-semibold leading-tight mb-6">
+        Chọn <span class="text-primary">Thân Phận</span> Của Ngươi
+      </h1>
+      <p class="text-lg text-muted-foreground leading-relaxed">
+        40 slot từ Hoàng Cung đến Huyền Môn. Rê chuột vào <span class="text-accent">từ gạch chân</span> trong các mô tả để xem giải thích.
+      </p>
+    </section>
+
+    {sections.map((sec) => (
+      <section class="py-16 md:py-24 border-t border-border">
+        <div class="max-w-6xl mx-auto px-6">
+          <div class="flex items-center gap-4 mb-12">
+            <span class="text-5xl text-accent font-serif">{sec.icon}</span>
+            <h2 class="font-serif text-3xl md:text-5xl font-semibold">{sec.title}</h2>
+          </div>
+
+          <div class="space-y-10">
+            {sec.groups.map((g) => (
+              <div>
+                <h3 class="font-serif text-xl font-semibold text-primary mb-5 pb-2 border-b border-border">{g.name}</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                  {g.slots.map((s) => (
+                    <div class="bg-card border border-border rounded p-5 hover:border-primary hover:shadow-lg transition group">
+                      <div class="flex items-start justify-between gap-3 mb-2">
+                        <h4 class="font-serif font-semibold leading-tight flex-1" set:html={renderWithGlossary(s.title, glossary)} />
+                        <span class={`text-xs px-2 py-1 rounded whitespace-nowrap ${s.taken >= s.slots ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                          {s.taken}/{s.slots}
+                        </span>
+                      </div>
+                      <p class="text-sm text-muted-foreground leading-relaxed" set:html={renderWithGlossary(s.desc, glossary)} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    ))}
+
+    <section class="py-20 bg-card border-t border-border">
+      <div class="max-w-4xl mx-auto px-6">
+        <p class="text-xs tracking-[0.4em] text-accent uppercase mb-3 text-center">Từ điển cổ đại</p>
+        <h2 class="font-serif text-3xl md:text-4xl font-semibold text-center mb-10">Bộ Từ Điển Xưng Hô & Thuật Ngữ</h2>
+        <div class="grid sm:grid-cols-2 gap-x-8 gap-y-4">
+          {glossary.map((g) => (
+            <div class="border-b border-border pb-3">
+              <dt class="font-serif font-semibold text-primary">{g.term}</dt>
+              <dd class="text-sm text-muted-foreground mt-1">{g.meaning}</dd>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="py-20 text-center">
+      <h2 class="font-serif text-3xl md:text-4xl font-semibold mb-6">Đã chọn được thân phận?</h2>
+      <a href="/register" class="inline-flex items-center gap-2 px-10 py-5 bg-primary text-primary-foreground rounded hover:scale-105 transition shadow-2xl">
+        Nộp Hồ Sơ Ngay →
+      </a>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<script is:inline define:vars={{ glossary }}>
+  // attach tooltips to <span data-term="..."> generated server-side
+  document.querySelectorAll("[data-term]").forEach((el) => {
+    const t = el.getAttribute("data-term");
+    const g = glossary.find((x) => x.term === t);
+    if (!g) return;
+    el.title = `${g.term}: ${g.meaning}`;
+  });
+</script>
+
+<!--
+  Inline trick to render glossary tooltips. SlotText component rendered server-side
+  wraps known terms in a span with title attr. We mirror the same approach below.
+-->
+---

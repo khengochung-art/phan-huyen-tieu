@@ -1,0 +1,165 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Fortune from "../components/Fortune.tsx";
+import KleapForm from "../components/KleapForm";
+
+const events = [
+  { date: "Huyền Minh · 32.IV.18", title: "Đại Yến Thu Hoạch", loc: "Hựu Uyển", desc: "Hoàng đế chủ trì yến tiệc cuối thu. Lần đầu tiên Đức Phi xuất hiện sau khi sinh hoàng tử thứ ba. Có tin đồn Hoàng đế sẽ tuyên bố Chữ Quân ngay tại yến tiệc." },
+  { date: "Huyền Minh · 32.V.02", title: "Đại Sự Kiện · Trận Phục Kích Vân Môn Quan", loc: "Biên Cương", desc: "Đại Tướng Quân Cố Thanh Hành dẫn 3 vạn quân mai phục quân Man tại Vân Môn Quan. Phe Tranh Cung tuyên bố chiến thắng — nhưng ai thật sự đứng sau chỉ huy?" },
+  { date: "Huyền Minh · 32.V.10", title: "Bão Tố Vạn Lý (Arc Chính)", loc: "Toàn Quốc", desc: "Arc chính hiện tại. Càn Thanh Điện bị tấn công bởi một lực lượng bí ẩn. Hoàng đế bị thương. Ai là kẻ đứng sau — Phe Trung Lập, hay Huyền Môn?" },
+  { date: "Huyền Minh · 32.VI.01", title: "Hôn Lễ Đại Công Chúa", loc: "Thiên An Điện", desc: "Đại Công Chúa Phùng Châu Yến sẽ được gả cho Quốc Vương nước Man. Nhiều phe tìm cách can thiệp để cứu cô, hoặc dùng cuộc hôn nhân này làm con tin." }
+];
+
+const logs = [
+  { num: "I", title: "Khởi Nguyên Hỗn Loạn", date: "Huyền Minh · 28", desc: "Hoàng đế đăng quang. Hậu cung bắt đầu chia rẽ thành ba nhóm: Trần thị (Hoàng Hậu), Lâm thị (Đức Phi), Tiêu thị (Quý Phi)." },
+  { num: "II", title: "Bóng Ma Phương Bắc", date: "Huyền Minh · 29", desc: "Đại Tướng Quân đánh tan quân Man. Nhưng một bức thư mật bị lộ — ông đang liên lạc với Tiêu Cục." },
+  { num: "III", title: "Tử Chiến Càn Thanh", date: "Huyền Minh · 30–31", desc: "Trận đấu trong hậu cung. Tiệp Dư Tiêu thị bị phát hiện đầu độc Thái Hậu, bị lưu đày. Quý Phi thế cờ lên ngôi đầu." },
+  { num: "IV", title: "Bão Tố Vạn Lý", date: "Huyền Minh · 32 (hiện tại)", desc: "Càn Thanh Điện bị tấn công. Cán Cân Quyền Lực chưa từng chao đảo mạnh đến thế." }
+];
+
+const hallOfFame = [
+  { period: "Tháng 04", title: "Bài RP Hay Nhất", who: "Lâm Thù Nghi · Đức Phi (Player: minhthu.0603)", desc: "Đoạn đối đáp giữa Đức Phi và Thái Hậu tại Hựu Uyển — được 167 lượt thả tim." },
+  { period: "Tháng 04", title: "Nhân Vật Mới Nổi Bật", who: "Tiết Ứng Hàn · Chưởng Tiêu Cục (Player: tiefumih)", desc: "Lối viết ám sắc, tạo hình ấn tượng, dòng kết bài luôn có callback đến arc chính." },
+  { period: "Tháng 03", title: "Cốt Truyện Phụ Hay Nhất", who: "Tô Vãn Ninh · Tả Thừa Tướng (Player: yenvan.writer)", desc: "Tuyến phụ 'Văn Quan vs Môn Phiệt' kéo dài 6 chương, kết thúc bằng cuộc đàm phán căng thẳng tại Tửu Lầu Phồn Hoa." }
+];
+
+const quotes = [
+  { text: "Bổn cung từng nghĩ đây là chốn cửu trùng, không ngờ lại là vực sâu không đáy.", author: "Lâm Thù Nghi · Đức Phi" },
+  { text: "Trẫm già rồi, nhưng con hổ chưa già. Kẻ nào muốn đoạt ngai vàng, cứ thử qua gươm của Trẫm.", author: "Hoàng Đế Huyền Minh" },
+  { text: "Binh pháp viết: 'Biết người biết ta, trăm trận trăm thắng.' Nhưng trong cung, kẻ thù lại là người ruột thịt.", author: "Cố Thanh Hành · Đại Tướng Quân" },
+  { text: "Ta không bán tin, ta bán vận mệnh. Và vận mệnh của ngươi — đã có người đặt cọc.", author: "Tiết Ứng Hàn · Chưởng Tiêu Cục" }
+];
+---
+
+<Base
+  title="Sự Kiện & Bảng Vàng · Phạn Huyền Tiêu"
+  description="Lịch sự kiện, biên niên sử và bảng vàng của group roleplay Phạn Huyền Tiêu. Trích đoạn RP xuất sắc và vòng quay bốc quẻ vận mệnh."
+>
+  <Header />
+
+  <main class="bg-background text-foreground">
+    <section class="py-20 md:py-28 text-center max-w-4xl mx-auto px-6">
+      <p class="text-xs tracking-[0.4em] text-accent uppercase mb-3">Hồ sơ triều đình</p>
+      <h1 class="font-serif text-5xl md:text-7xl font-semibold leading-tight mb-6">
+        Sự Kiện <span class="text-primary">& Bảng Vàng</span>
+      </h1>
+      <p class="text-lg text-muted-foreground leading-relaxed">
+        Lưu trữ lịch sử group, vinh danh những bài viết xuất sắc và thông báo event sắp diễn ra.
+      </p>
+    </section>
+
+    <!-- FORTUNE -->
+    <section class="py-16 md:py-24 bg-card border-y border-border">
+      <Fortune client:visible />
+    </section>
+
+    <!-- EVENT CALENDAR -->
+    <section class="py-16 md:py-24">
+      <div class="max-w-5xl mx-auto px-6">
+        <p class="text-xs tracking-[0.4em] text-accent uppercase mb-3 text-center">Lịch Triều</p>
+        <h2 class="font-serif text-3xl md:text-5xl font-semibold text-center mb-12">Lịch Sự Kiện Sắp Diễn Ra</h2>
+        <div class="relative">
+          <div class="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-border"></div>
+          {events.map((e, i) => (
+            <div class={`relative md:grid md:grid-cols-2 gap-12 mb-10 ${i % 2 === 0 ? "" : "md:direction-rtl"}`}>
+              <div class={`md:${i % 2 === 0 ? "pr-12 text-right" : "md:col-start-2 pl-12"} pl-8 md:pl-0`}>
+                <div class="text-xs tracking-widest text-accent uppercase">{e.date} · {e.loc}</div>
+                <h3 class="font-serif text-xl font-semibold mt-1 mb-2">{e.title}</h3>
+                <p class="text-sm text-muted-foreground leading-relaxed">{e.desc}</p>
+              </div>
+              <span class="absolute left-0 md:left-1/2 top-2 w-3 h-3 rounded-full bg-primary -translate-x-1/2 ring-4 ring-background"></span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- LOGS -->
+    <section class="py-16 md:py-24 bg-card border-y border-border">
+      <div class="max-w-5xl mx-auto px-6">
+        <p class="text-xs tracking-[0.4em] text-accent uppercase mb-3 text-center">Biên Niên Sử</p>
+        <h2 class="font-serif text-3xl md:text-5xl font-semibold text-center mb-12">Tóm Tắt Các Arc</h2>
+        <div class="space-y-6">
+          {logs.map((l) => (
+            <details class="bg-background border border-border rounded group">
+              <summary class="cursor-pointer p-6 flex items-center justify-between list-none">
+                <div class="flex items-center gap-6">
+                  <span class="font-serif text-3xl text-accent tabular-nums">{l.num}</span>
+                  <div class="text-left">
+                    <h3 class="font-serif text-xl font-semibold">{l.title}</h3>
+                    <div class="text-xs tracking-widest text-muted-foreground uppercase mt-1">{l.date}</div>
+                  </div>
+                </div>
+                <span class="text-accent group-open:rotate-180 transition">▼</span>
+              </summary>
+              <div class="px-6 pb-6 pl-20 text-sm text-muted-foreground leading-relaxed">{l.desc}</div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- HALL OF FAME -->
+    <section class="py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-6">
+        <p class="text-xs tracking-[0.4em] text-accent uppercase mb-3 text-center">Vinh danh</p>
+        <h2 class="font-serif text-3xl md:text-5xl font-semibold text-center mb-12">Bảng Vàng Tháng</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          {hallOfFame.map((h) => (
+            <article class="bg-card border border-accent rounded overflow-hidden">
+              <div class="bg-accent text-accent-foreground px-5 py-2 text-xs tracking-widest uppercase font-semibold">
+                {h.period}
+              </div>
+              <div class="p-6">
+                <h3 class="font-serif text-lg font-semibold mb-2">{h.title}</h3>
+                <p class="text-xs text-muted-foreground mb-3">{h.who}</p>
+                <p class="text-sm leading-relaxed">{h.desc}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- QUOTES -->
+    <section class="py-16 md:py-24 bg-card border-y border-border overflow-hidden">
+      <div class="max-w-5xl mx-auto px-6">
+        <p class="text-xs tracking-[0.4em] text-accent uppercase mb-3 text-center">Trích đoạn xuất sắc</p>
+        <h2 class="font-serif text-3xl md:text-5xl font-semibold text-center mb-12">Lời Hay Ý Đẹp</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          {quotes.map((q) => (
+            <blockquote class="bg-background border-l-4 border-accent p-6 rounded">
+              <p class="font-serif text-lg italic leading-relaxed mb-4">"{q.text}"</p>
+              <cite class="text-xs text-muted-foreground not-italic uppercase tracking-widest">— {q.author}</cite>
+            </blockquote>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- FORM GÓP Ý EVENT -->
+    <section class="py-20">
+      <div class="max-w-3xl mx-auto px-6">
+        <p class="text-xs tracking-[0.4em] text-accent uppercase mb-3 text-center">Đề xuất</p>
+        <h2 class="font-serif text-3xl md:text-4xl font-semibold text-center mb-3">Bạn Có Ý Tưởng Event?</h2>
+        <p class="text-center text-muted-foreground mb-10">Gửi đề xuất cho BQL — nếu được duyệt, bạn sẽ là host chính của event đó.</p>
+        <KleapForm
+          client:load
+          formId="event-suggest"
+          title="Đề Xuất Event"
+          fields={[
+            { name: "player", label: "Tên Player", type: "text", required: true },
+            { name: "event_name", label: "Tên event", type: "text", required: true },
+            { name: "setting", label: "Bối cảnh / Địa điểm", type: "text", required: true },
+            { name: "pitch", label: "Tóm tắt nội dung", type: "textarea", required: true }
+          ]}
+          submitText="Gửi Đề Xuất"
+        />
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>

@@ -1,0 +1,130 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+const icRules = [
+  { title: "Văn phong cổ đại", desc: "Sử dụng xưng hô phù hợp với thân phận: Trẫm (Hoàng đế), Bổn cung (Phi tần), Thần / Nô tì (quan viên, hạ nhân). Hạn chế từ hiện đại nếu có thể thay bằng từ Hán Việt." },
+  { title: "Quy tắc về thương vong", desc: "Không tự ý hại chết hoặc làm bị thương nặng nhân vật của người khác. Mọi thương tật phải có sự đồng ý OOC (OOC Consensual) hoặc sự can thiệp của BQL." },
+  { title: "Quyền từ chối", desc: "Mỗi người chơi có quyền từ chối một tình huống RP nếu thấy không thoải mái. Chỉ cần reply OOC: 'Xin lỗi, mình pass tình huống này.'" },
+  { title: "Đừng solo toàn bộ arc", desc: "Một arc quan trọng cần sự tham gia của nhiều người. Nếu bạn muốn khởi động một arc lớn, hãy ping BQL trước." }
+];
+
+const oocRules = [
+  { title: "Tách biệt IC và OOC", desc: "Mọi mâu thuẫn trong game xin đừng mang ra đời thực. Player và nhân vật là hai người khác nhau." },
+  { title: "Văn minh & tôn trọng", desc: "Không chửi bới, không công kích cá nhân ngoài đời. Tranh luận về lore / luật chơi là được, nhưng giữ giọng điệu xây dựng." },
+  { title: "Drama trong group", desc: "Nếu có xung đột cá nhân, hãy gửi BQL xử lý. Không đăng công khai, không kéo cả group vào." },
+  { title: "Nội dung nhạy cảm", desc: "Tránh các tình huống RP về tự tử, bạo lực cực đoan, hoặc xúc phạm tôn giáo. Khiên cấm 18+, không khỏa thân." }
+];
+
+const formatGuide = [
+  { sym: "...", meaning: "Hành động trong dấu ngoặc đơn hoặc sao." },
+  { sym: '"..."', meaning: "Lời thoại trong dấu nháy đôi." },
+  { sym: "~...~", meaning: "Suy nghĩ nội tâm, không ai nghe được." },
+  { sym: "[OOC: ...]", meaning: "Ghi chú ngoài nhân vật." },
+  { sym: "♪ ... ♪", meaning: "Lời bài hát / thơ." }
+];
+---
+
+<Base
+  title="Quy Định · Phạn Huyền Tiêu"
+  description="Quy định In-Character (IC) và Out-of-Character (OOC) của group roleplay Phạn Huyền Tiêu. Hướng dẫn format roleplay, quy tắc thương vong và từ điển xưng hô."
+>
+  <Header />
+
+  <main class="bg-background text-foreground">
+    <section class="py-20 md:py-28 text-center max-w-4xl mx-auto px-6">
+      <p class="text-xs tracking-[0.4em] text-accent uppercase mb-3">Hiến chương group</p>
+      <h1 class="font-serif text-5xl md:text-7xl font-semibold leading-tight mb-6">
+        Quy Định <span class="text-primary">Triều Đình</span>
+      </h1>
+      <p class="text-lg text-muted-foreground leading-relaxed">
+        Đọc kỹ trước khi bước chân vào Càn Thanh Điện. Vi phạm có thể bị cấm tham gia vĩnh viễn.
+      </p>
+    </section>
+
+    <!-- IC -->
+    <section class="py-16 md:py-24 border-t border-border">
+      <div class="max-w-5xl mx-auto px-6">
+        <div class="flex items-center gap-3 mb-10">
+          <span class="text-3xl">📜</span>
+          <h2 class="font-serif text-3xl md:text-4xl font-semibold">Quy Định In-Character (IC)</h2>
+        </div>
+        <div class="grid md:grid-cols-2 gap-5">
+          {icRules.map((r, i) => (
+            <div class="bg-card border border-border rounded p-6 hover:border-primary transition">
+              <div class="flex items-start gap-4">
+                <span class="font-serif text-2xl text-accent tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+                <div>
+                  <h3 class="font-serif text-lg font-semibold mb-2">{r.title}</h3>
+                  <p class="text-sm text-muted-foreground leading-relaxed">{r.desc}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- OOC -->
+    <section class="py-16 md:py-24 bg-card border-y border-border">
+      <div class="max-w-5xl mx-auto px-6">
+        <div class="flex items-center gap-3 mb-10">
+          <span class="text-3xl">🪶</span>
+          <h2 class="font-serif text-3xl md:text-4xl font-semibold">Quy Định Out-of-Character (OOC)</h2>
+        </div>
+        <div class="grid md:grid-cols-2 gap-5">
+          {oocRules.map((r, i) => (
+            <div class="bg-background border border-border rounded p-6 hover:border-primary transition">
+              <div class="flex items-start gap-4">
+                <span class="font-serif text-2xl text-accent tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+                <div>
+                  <h3 class="font-serif text-lg font-semibold mb-2">{r.title}</h3>
+                  <p class="text-sm text-muted-foreground leading-relaxed">{r.desc}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- FORMAT GUIDE -->
+    <section class="py-16 md:py-24">
+      <div class="max-w-5xl mx-auto px-6">
+        <div class="flex items-center gap-3 mb-10">
+          <span class="text-3xl">✒️</span>
+          <h2 class="font-serif text-3xl md:text-4xl font-semibold">Hướng Dẫn Format Roleplay</h2>
+        </div>
+        <div class="bg-card border-2 border-accent rounded overflow-hidden">
+          <table class="w-full">
+            <thead class="bg-muted">
+              <tr>
+                <th class="text-left p-4 font-serif text-sm uppercase tracking-widest text-accent">Ký hiệu</th>
+                <th class="text-left p-4 font-serif text-sm uppercase tracking-widest text-accent">Ý nghĩa</th>
+              </tr>
+            </thead>
+            <tbody>
+              {formatGuide.map((f) => (
+                <tr class="border-t border-border">
+                  <td class="p-4 font-mono text-primary whitespace-nowrap">{f.sym}</td>
+                  <td class="p-4 text-sm">{f.meaning}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 text-center bg-primary text-primary-foreground">
+      <h3 class="font-serif text-3xl mb-4">Đã hiểu rõ quy định?</h3>
+      <p class="opacity-90 mb-8 max-w-xl mx-auto px-6">Bước tiếp theo: gửi hồ sơ OC để Ban Quản Lý duyệt và bạn sẽ chính thức được bước chân vào Càn Thanh Điện.</p>
+      <a href="/register" class="inline-flex items-center gap-2 px-10 py-5 bg-accent text-accent-foreground rounded hover:scale-105 transition shadow-2xl">
+        Nộp Hồ Sơ OC →
+      </a>
+    </section>
+  </main>
+
+  <Footer />
+</Base>

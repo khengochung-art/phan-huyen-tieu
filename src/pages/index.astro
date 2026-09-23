@@ -1,0 +1,539 @@
+---
+import Base from "../layouts/Base.astro";
+
+const stats = [
+  { num: "27", label: "Nhân vật đang hoạt động", note: "trên tổng 40 slot" },
+  { num: "03", label: "Phe phái chính", note: "Hoàng Quan · Tranh Cung · Trung Lập" },
+  { num: "12", label: "Sự kiện đã diễn ra", note: "từ niên hiệu Huyền Minh năm thứ 28" },
+  { num: "05", label: "Năm gây dựng", note: "tính từ khi sáng lập group" }
+];
+
+const tickerItems = [
+  { tag: "Cấm Thành", text: "Hoàng đế lâm bạo bệnh, Thái Y Viện túc trực ngày đêm." },
+  { tag: "Hậu Cung", text: "Đức Phi Lâm thị sinh hoàng tử thứ ba, chấn động nội cung." },
+  { tag: "Biên Cương", text: "Quân Man phá cửa ải Vân Môn, Đại Tướng Quân xin cứu viện." },
+  { tag: "Tiêu Cục", text: "Một sứ giả bí ẩn rời Kinh Thành lúc nửa đêm — người của phe nào?" },
+  { tag: "Khâm Thiên Giám", text: "Sao Chổi hiện về hướng Tây, cả triều đình bàn tán." }
+];
+
+const rosterPreview = [
+  { name: "Lý Trường Ninh", role: "Đại Hoàng Tử", faction: "Tranh Cung", quote: "Gươm sắc không bằng lòng người.", img: "/uploads/on-x.jpg" },
+  { name: "Lâm Thù Nghi", role: "Đức Phi", faction: "Tranh Cung", quote: "Hồng nhan họa nước, cũng là vì nước.", img: "/uploads/1785027887729-134945827711147686-6975393912130612660-1064cd30fc13108e21f5833623dcfe5d.jpg" },
+  { name: "Cố Thanh Hành", role: "Đại Tướng Quân", faction: "Hoàng Quan", quote: "Biên cương còn, Trẫm còn.", img: "/uploads/on-x.jpg" },
+  { name: "Tô Vãn Ninh", role: "Tả Thừa Tướng", faction: "Trung Lập", quote: "Văn như nước, tĩnh mà thấm.", img: "/uploads/1785027887729-134945827711147686-6975393912130612660-1064cd30fc13108e21f5833623dcfe5d.jpg" },
+  { name: "Tiết Ứng Hàn", role: "Chưởng Tiêu Cục", faction: "Huyền Môn", quote: "Bóng tối trung thành hơn hoàng đế.", img: "/uploads/on-x.jpg" },
+  { name: "Châu Minh Nguyệt", role: "Thái Y Viện Chưởng Viện", faction: "Trung Lập", quote: "Một phương thuốc, một vận mệnh.", img: "/uploads/1785027887729-134945827711147686-6975393912130612660-1064cd30fc13108e21f5833623dcfe5d.jpg" }
+];
+
+const quotes = [
+  { text: "Bổn cung từng nghĩ đây là chốn cửu trùng, không ngờ lại là vực sâu không đáy.", author: "Lâm Thù Nghi · Đức Phi" },
+  { text: "Trẫm già rồi, nhưng con hổ chưa già. Kẻ nào muốn đoạt ngai vàng, cứ thử qua gươm của Trẫm.", author: "Hoàng Đế Huyền Minh" },
+  { text: "Binh pháp viết: 'Biết người biết ta, trăm trận trăm thắng.' Nhưng trong cung, kẻ thù lại là người ruột thịt.", author: "Cố Thanh Hành · Đại Tướng Quân" },
+  { text: "Ta không bán tin, ta bán vận mệnh. Và vận mệnh của ngươi — đã có người đặt cọc.", author: "Tiết Ứng Hàn · Chưởng Tiêu Cục" }
+];
+
+const powerBalance = [
+  { faction: "Phe Hoàng Quan", value: 38, color: "var(--primary)", desc: "Bảo vệ trật tự hiện tại" },
+  { faction: "Phe Tranh Cung", value: 45, color: "var(--accent)", desc: "Đại + Tam Hoàng Tử đối đầu" },
+  { faction: "Phe Trung Lập / Giang Hồ", value: 17, color: "var(--muted-foreground)", desc: "Chờ đặt cược phút cuối" }
+];
+---
+
+<Base
+  title="Phạn Huyền Tiêu (梵玄霄) — Group Roleplay Cổ Đại"
+  description="Phạn Huyền Tiêu — group roleplay cổ đại giả tưởng. Đại Phạn Quốc thời Huyền Minh: hoàng thất tranh sủng, hậu cung đấu đá, văn quan võ tướng chia rẽ, giang hồ thao túng từ bóng tối."
+  schema={[
+    { "@type": "Organization", "name": "Phạn Huyền Tiêu", "alternateName": "梵玄霄", "description": "Group roleplay cổ đại giả tưởng tập trung vào triều đình và cung đấu." }
+  ]}
+>
+  <style is:inline>
+    :root {
+      --font-serif: 'Cormorant Garamond', 'Spectral', ui-serif, 'Times New Roman', serif;
+      --font-sans: 'Be Vietnam Pro', 'Manrope', ui-sans-serif, system-ui, sans-serif;
+    }
+    /* Custom cursor — cọ mực */
+    @media (hover: hover) and (pointer: fine) {
+      html { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><path d="M6 24 Q9 16 17 8 L21 4 L23 6 L19 10 Q11 18 5 22 Z" fill="%231a120c" opacity="0.75"/></svg>') 2 2, auto; }
+      a, button, [role="button"] { cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><path d="M6 24 Q9 16 17 8 L21 4 L23 6 L19 10 Q11 18 5 22 Z" fill="%238b1e2d" opacity="0.9"/></svg>') 2 2, pointer; }
+    }
+    @keyframes float-soft { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    @keyframes float-slow { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-6px) rotate(2deg); } }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+    @keyframes pulse-soft { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
+    @keyframes ticker { 0% { transform: translateY(100%); opacity: 0; } 10%, 90% { opacity: 1; } 100% { transform: translateY(-100%); opacity: 0; } }
+    .float-soft { animation: float-soft 5s ease-in-out infinite; }
+    .float-slow { animation: float-slow 8s ease-in-out infinite; }
+    .pulse-soft { animation: pulse-soft 3s ease-in-out infinite; }
+    .text-shimmer {
+      background: linear-gradient(90deg, var(--foreground) 0%, var(--accent-color) 35%, var(--primary) 65%, var(--foreground) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 6s linear infinite;
+    }
+    /* Crane decoration */
+    .ink-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--border) 20%, var(--accent) 50%, var(--border) 80%, transparent 100%);
+    }
+    /* Vertical hanzi seal */
+    .vertical-seal {
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+      letter-spacing: 0.3em;
+    }
+    /* Cursor ink trail */
+    .ink-dot {
+      position: fixed;
+      pointer-events: none;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
+      opacity: 0;
+      z-index: 9999;
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+
+  <!-- ============ INLINE NAV ============ -->
+  <nav class="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+      <a href="/" class="flex items-center gap-3 group">
+        <span class="text-3xl font-serif text-primary transition-transform group-hover:scale-110">梵</span>
+        <span class="hidden sm:inline text-lg md:text-xl font-serif font-semibold tracking-wide">Phạm Huyền Tiêu</span>
+      </a>
+      <div class="hidden lg:flex items-center gap-7 text-sm font-medium">
+        <a href="/lore" class="hover:text-primary transition">Cốt Truyện</a>
+        <a href="/roles" class="hover:text-primary transition">Thân Phận</a>
+        <a href="/factions" class="hover:text-primary transition">Phe Phái</a>
+        <a href="/rules" class="hover:text-primary transition">Quy Định</a>
+        <a href="/gallery" class="hover:text-primary transition">Sự Kiện</a>
+        <a href="/register" class="px-4 py-2 bg-primary text-primary-foreground rounded hover:scale-105 transition">Gia Nhập</a>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="theme-toggle" aria-label="Chuyển chế độ Ngày/Đêm" class="p-2 border border-border rounded hover:bg-secondary transition" title="Chuyển Ngày / Đêm">
+          <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button id="music-toggle" aria-label="Bật/tắt nhạc nền" class="p-2 border border-border rounded hover:bg-secondary transition" title="Nhạc cổ phong (mặc định tắt)">
+          <svg id="icon-music-off" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM21 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/></svg>
+          <svg id="icon-music-on" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/></svg>
+        </button>
+        <a href="/register" class="lg:hidden shrink-0 whitespace-nowrap px-3 py-1.5 bg-primary text-primary-foreground text-xs font-medium rounded">Gia Nhập</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/15 via-[var(--background)] to-[var(--accent)]/10"></div>
+    <!-- Decorative giant characters -->
+    <div class="absolute top-10 right-6 md:right-16 text-[8rem] md:text-[14rem] font-serif text-primary/8 select-none pointer-events-none leading-none">玄</div>
+    <div class="absolute bottom-10 left-4 md:left-12 text-[6rem] md:text-[10rem] font-serif text-accent/10 select-none pointer-events-none leading-none">霄</div>
+    <div class="relative max-w-7xl mx-auto px-6 py-16 md:py-24 grid md:grid-cols-5 gap-10 md:gap-16 items-center">
+      <div class="md:col-span-3">
+        <div class="mb-6">
+          <span class="block text-5xl md:text-7xl font-serif text-primary leading-none">梵玄霄</span>
+          <span class="block mt-3 max-w-full text-center md:text-left text-xs md:text-sm tracking-[0.35em] text-muted-foreground uppercase break-words">Đại Phạn Quốc</span>
+        </div>
+        <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif font-semibold leading-[1.05] mb-6 tracking-tight text-foreground">
+          Phạn <span class="text-primary">Huyền</span> <span class="text-accent">Tiêu</span>
+        </h1>
+        <p class="text-xl md:text-2xl font-serif italic text-accent/90 mb-5 max-w-xl leading-snug">
+          "Dưới bóng cửu trùng, triều triều sóng cuộn.<br/>
+          Ai nắm càn khôn, ai hóa tro tàn?"
+        </p>
+        <p class="order-2 text-base text-foreground/80 mb-10 max-w-xl leading-relaxed">
+          Group roleplay cổ đại giả tưởng — bước vào triều đại <strong>Đại Phạn Quốc</strong> thời <strong>Huyền Minh</strong>, nơi hoàng thất tranh sủng, hậu cung đấu đá, văn quan võ tướng chia rẽ, và thế lực huyền bí thao túng từ bóng tối.
+        </p>
+        <div class="order-1 flex flex-wrap gap-4">
+          <a href="/register" class="group inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-medium rounded shadow-xl hover:scale-105 hover:shadow-2xl transition-all">
+            Gia Nhập Phạn Huyền Tiêu
+            <span class="transition-transform group-hover:translate-x-1">→</span>
+          </a>
+          <a href="/lore" class="inline-flex items-center gap-2 px-8 py-4 border-2 border-border hover:bg-secondary hover:border-accent font-medium rounded transition-all">
+            Khám Phá Cốt Truyện
+          </a>
+        </div>
+        <div class="mt-10 flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
+          <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary pulse-soft"></span> Đang tuyển thành viên</span>
+          <span>·</span>
+          <span>Niên hiệu <strong class="text-foreground">Huyền Minh</strong> năm thứ 32</span>
+        </div>
+      </div>
+      <div class="md:col-span-2 relative">
+        <div class="relative aspect-[3/4] rounded-sm overflow-hidden border border-accent/40 shadow-2xl bg-gradient-to-br from-[var(--primary)]/30 via-[var(--background)] to-[var(--accent)]/30">
+          <!-- Decorative ink-wash composition (no real photo, no screenshot) -->
+          <svg class="absolute inset-0 w-full h-full" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <radialGradient id="moon" cx="75%" cy="20%" r="40%">
+                <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.55"/>
+                <stop offset="60%" stop-color="var(--accent)" stop-opacity="0.05"/>
+                <stop offset="100%" stop-color="var(--background)" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="palace" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--foreground)" stop-opacity="0.85"/>
+                <stop offset="100%" stop-color="var(--background)" stop-opacity="1"/>
+              </linearGradient>
+              <filter id="grain">
+                <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+                <feColorMatrix values="0 0 0 0 0.1  0 0 0 0 0.07  0 0 0 0 0.05  0 0 0 0.15 0"/>
+              </filter>
+            </defs>
+            <rect width="300" height="400" fill="url(#moon)"/>
+            <circle cx="225" cy="75" r="34" fill="var(--accent)" opacity="0.85"/>
+            <circle cx="225" cy="75" r="44" fill="none" stroke="var(--accent)" stroke-opacity="0.25" stroke-width="1"/>
+            <path d="M0 250 L40 220 L80 240 L130 200 L180 235 L230 210 L300 245 L300 400 L0 400 Z" fill="var(--foreground)" opacity="0.35"/>
+            <path d="M0 290 L60 260 L120 285 L200 255 L260 290 L300 275 L300 400 L0 400 Z" fill="var(--foreground)" opacity="0.55"/>
+            <g fill="url(#palace)">
+              <rect x="40" y="300" width="220" height="100"/>
+              <polygon points="40,300 60,275 80,300"/>
+              <polygon points="80,300 100,270 120,300"/>
+              <polygon points="120,300 140,275 160,300"/>
+              <polygon points="160,300 180,265 200,300"/>
+              <polygon points="200,300 220,275 240,300"/>
+              <polygon points="240,300 260,278 280,300"/>
+              <rect x="135" y="330" width="30" height="50"/>
+            </g>
+            <ellipse cx="60" cy="370" rx="80" ry="10" fill="var(--foreground)" opacity="0.25"/>
+            <ellipse cx="240" cy="380" rx="60" ry="8" fill="var(--foreground)" opacity="0.2"/>
+            <rect width="300" height="400" filter="url(#grain)" opacity="0.4"/>
+          </svg>
+          <div class="absolute inset-0 bg-gradient-to-t from-[var(--background)]/80 via-transparent to-transparent"></div>
+          <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs">
+            <span class="px-2 py-1 bg-background/80 border border-border rounded backdrop-blur-sm">Minh họa thủy mặc</span>
+            <span class="px-2 py-1 bg-primary text-primary-foreground rounded">梵玄霄</span>
+          </div>
+        </div>
+        <!-- Corner seals -->
+        <div class="absolute -top-3 -right-3 w-16 h-16 border-t-2 border-r-2 border-accent"></div>
+        <div class="absolute -bottom-3 -left-3 w-16 h-16 border-b-2 border-l-2 border-accent"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT + CRANE DECORATION ============ -->
+  <section class="relative">
+    <div class="relative h-32 md:h-40 overflow-hidden">
+      <img src="/uploads/1785027887729-134945827711147686-6975393912130612660-1064cd30fc13108e21f5833623dcfe5d.jpg" alt="Hạc thủy mặc" class="w-full h-full object-cover opacity-80" />
+      <div class="absolute inset-0 bg-gradient-to-b from-[var(--background)] via-transparent to-[var(--background)]"></div>
+    </div>
+    <div class="max-w-4xl mx-auto px-6 py-12 md:py-20 text-center">
+      <p class="text-xs tracking-[0.4em] text-accent mb-4 uppercase">Giới thiệu ngắn</p>
+      <h2 class="text-3xl md:text-5xl font-serif font-semibold mb-8">
+        Một cuộc chơi lớn. Một triều đại cần bạn.
+      </h2>
+      <p class="text-lg leading-relaxed text-foreground/80">
+        <strong class="text-primary">Phạn Huyền Tiêu</strong> là group roleplay cổ đại giả tưởng tập trung vào <strong>cung đấu, triều chính, và những âm mưu dưới trướng triều đình</strong>. Người chơi đóng vai Hoàng tử, Phi tần, Văn quan, Võ tướng, hoặc thế lực trong bóng tối — viết nên vận mệnh của Đại Phạn Quốc qua từng bài đăng, từng nước cờ, từng cuộc hôn nhân chính trị. Văn phong Hán Việt, tôn trọng lẫn nhau, và bảo vệ ranh giới IC/OOC là ba điều kiện duy nhất.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ STATS ============ -->
+  <section class="border-y border-border bg-card">
+    <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
+      {stats.map((s) => (
+        <div class="text-center md:text-left">
+          <div class="text-5xl md:text-6xl font-serif text-primary mb-2">{s.num}</div>
+          <div class="text-sm md:text-base font-medium text-foreground mb-1">{s.label}</div>
+          <div class="text-xs text-muted-foreground">{s.note}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ============ EVENT TICKER ============ -->
+  <section class="relative">
+    <div class="max-w-7xl mx-auto px-6 py-16 md:py-24">
+      <div class="flex items-end justify-between mb-8 flex-wrap gap-4">
+      <div class="flex items-end justify-between mb-8 flex-wrap gap-4">
+        <div>
+          <p class="text-xs tracking-[0.4em] text-accent mb-2 uppercase">Tình hình triều đình</p>
+          <h2 class="text-3xl md:text-5xl font-serif font-semibold">Biến động trong ngày</h2>
+        </div>
+        <span class="flex items-center gap-2 text-xs text-muted-foreground">
+          <span class="w-2 h-2 rounded-full bg-primary pulse-soft"></span>
+          Cập nhật In-Character · Niên hiệu Huyền Minh năm 32
+        </span>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {tickerItems.map((item, idx) => (
+          <article class={`group relative p-6 bg-card border border-border rounded-lg hover:border-accent hover:shadow-xl transition-all`}>
+            <div class="flex items-start gap-3 mb-3">
+              <span class="text-3xl font-serif text-primary leading-none">{String(idx + 1).padStart(2, '0')}</span>
+              <span class="px-2 py-0.5 text-xs border border-border rounded text-accent font-medium">{item.tag}</span>
+            </div>
+            <p class="text-foreground/85 leading-relaxed text-sm">{item.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ POWER BALANCE ============ -->
+  <section class="bg-secondary border-y border-border">
+    <div class="max-w-7xl mx-auto px-6 py-16 md:py-24 grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <p class="text-xs tracking-[0.4em] text-accent mb-2 uppercase">Cán Cân Quyền Lực</p>
+        <h2 class="text-3xl md:text-5xl font-serif font-semibold mb-6">Ai đang nắm càn khôn?</h2>
+        <p class="text-base text-foreground/80 mb-6 leading-relaxed">
+          Tỷ lệ ảnh hưởng hiện tại của ba phe phái chính trong triều đình, được cập nhật sau mỗi Arc/Event lớn. Xem chi tiết trên trang <a href="/factions" class="text-primary underline-offset-4 hover:underline">Phe Phái</a>.
+        </p>
+        <div class="flex gap-4">
+          <a href="/factions" class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground rounded font-medium hover:scale-105 transition">
+            Phân tích chi tiết →
+          </a>
+          <button id="reroll-balance" class="px-5 py-2.5 border border-border rounded hover:bg-background transition">
+            Tính lại
+          </button>
+        </div>
+      </div>
+      <div class="space-y-5" id="power-balance">
+        {powerBalance.map((p) => (
+          <div class="balance-row" data-value={p.value}>
+            <div class="flex justify-between mb-1.5 text-sm">
+              <span class="font-medium">{p.faction}</span>
+              <span class="font-mono text-muted-foreground balance-pct">{p.value}%</span>
+            </div>
+            <div class="h-3 bg-background rounded-full overflow-hidden border border-border">
+              <div class="balance-bar h-full rounded-full transition-all duration-1000" style={`width: ${p.value}%; background: ${p.color};`}></div>
+            </div>
+            <p class="text-xs text-muted-foreground mt-1.5">{p.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OC ROSTER PREVIEW ============ -->
+  <section>
+    <div class="max-w-7xl mx-auto px-6 py-16 md:py-24">
+      <div class="flex items-end justify-between mb-10 flex-wrap gap-4">
+        <div>
+          <p class="text-xs tracking-[0.4em] text-accent mb-2 uppercase">Hồ sơ nhân vật</p>
+          <h2 class="text-3xl md:text-5xl font-serif font-semibold">Nhân vật nổi bật</h2>
+        </div>
+        <a href="/register" class="text-sm text-primary hover:underline">Xem toàn bộ roster →</a>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {rosterPreview.map((oc) => (
+          <article class="group bg-card border border-border rounded-lg overflow-hidden hover:border-accent hover:shadow-2xl transition-all">
+            <div class="aspect-[3/4] overflow-hidden bg-gradient-to-br from-[var(--primary)]/20 to-[var(--accent)]/20">
+              <img src={oc.img} alt={oc.name} class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700" />
+            </div>
+            <div class="p-5">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs px-2 py-0.5 bg-primary/10 text-primary rounded font-medium">{oc.faction}</span>
+                <span class="text-xs text-muted-foreground">{oc.role}</span>
+              </div>
+              <h3 class="text-xl font-serif font-semibold mb-2">{oc.name}</h3>
+              <p class="text-sm text-foreground/75 italic font-serif">"{oc.quote}"</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FORTUNE / QUẺ GENERATOR ============ -->
+  <section class="bg-card border-y border-border">
+    <div class="max-w-3xl mx-auto px-6 py-16 md:py-20 text-center">
+      <p class="text-xs tracking-[0.4em] text-accent mb-3 uppercase">Tiện ích Roleplay</p>
+      <h2 class="text-3xl md:text-5xl font-serif font-semibold mb-4">Bốc Quẻ Vận Mệnh</h2>
+      <p class="text-muted-foreground mb-8">Rung chuông Khâm Thiên Giám, xem vận khí hôm nay của ngươi ra sao.</p>
+      <div id="fortune-box" class="bg-background border-2 border-accent/40 rounded-lg p-8 mb-6 min-h-[180px] flex items-center justify-center">
+        <div class="text-center">
+          <div class="text-7xl mb-4 font-serif text-primary">卜</div>
+          <p class="text-muted-foreground italic font-serif">Nhấn nút bên dưới để bốc quẻ</p>
+        </div>
+      </div>
+      <button id="fortune-btn" class="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-medium rounded hover:scale-105 transition shadow-lg">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M12 2v20M5 9l7-7 7 7"/></svg>
+        Bốc Quẻ Đầu Ngày
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED QUOTES (moved to /gallery — single source of truth) ============ -->
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-[var(--primary)] via-[var(--primary)] to-[var(--brand-dark)]"></div>
+    <img src="https://assets.kleap.io/102911/images/1790162702313-y_n-ti_c-ho_ng-cung" alt="Yến tiệc hoàng cung" class="absolute inset-0 w-full h-full object-cover opacity-25" />
+    <div class="relative max-w-3xl mx-auto px-6 py-20 md:py-28 text-center text-primary-foreground">
+      <p class="text-xs tracking-[0.4em] opacity-70 mb-3 uppercase">Sẵn sàng chưa?</p>
+      <h2 class="text-4xl md:text-6xl font-serif font-semibold mb-5 leading-tight">
+        Triều đình đợi ngươi.<br/>Ngai vàng không đợi ai.
+      </h2>
+      <p class="text-lg opacity-90 mb-10 max-w-xl mx-auto">
+        Hoàn thành hồ sơ OC, gửi về cho Ban Quản Lý, và bước chân vào Càn Thanh Điện trong vòng một tuần.
+      </p>
+      <a href="/register" class="inline-flex items-center gap-2 px-10 py-5 bg-accent text-accent-foreground font-medium rounded shadow-2xl hover:scale-105 transition-all">
+        Nộp Hồ Sơ OC Ngay
+        <span>→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ INLINE FOOTER ============ -->
+  <footer class="border-t border-border bg-card">
+    <div class="max-w-7xl mx-auto px-6 py-12 grid md:grid-cols-4 gap-8">
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-3xl font-serif text-primary">梵</span>
+          <span class="text-xl font-serif font-semibold">Phạn Huyền Tiêu</span>
+        </div>
+        <p class="text-sm text-muted-foreground max-w-md leading-relaxed">
+          Group roleplay cổ đại giả tưởng. Tất cả nhân vật và sự kiện trong group đều là hư cấu. Mọi mâu thuẫn trong game xin đừng mang ra đời thực.
+        </p>
+      </div>
+      <div>
+        <h4 class="text-sm font-semibold uppercase tracking-widest mb-4 text-accent">Khám phá</h4>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li><a href="/lore" class="hover:text-primary transition">Cốt Truyện</a></li>
+          <li><a href="/roles" class="hover:text-primary transition">Thân Phận & Vị Trí</a></li>
+          <li><a href="/factions" class="hover:text-primary transition">Phe Phái</a></li>
+          <li><a href="/rules" class="hover:text-primary transition">Quy Định</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-sm font-semibold uppercase tracking-widest mb-4 text-accent">Cộng đồng</h4>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li><a href="/register" class="hover:text-primary transition">Đăng Ký OC</a></li>
+          <li><a href="/gallery" class="hover:text-primary transition">Sự Kiện & Bảng Vàng</a></li>
+          <li>Discord: <span class="text-foreground">PhamHuyenTieu#0001</span></li>
+          <li>Email: <span class="text-foreground">banquanly@phamhuyentieu.vn</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-border">
+      <div class="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground">
+        <span>© {new Date().getFullYear()} Phạn Huyền Tiêu · 梵玄霄. Mọi quyền được bảo lưu.</span>
+        <span class="font-serif italic">"Dưới bóng cửu trùng, ai hóa tro tàn?"</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ SCRIPTS ============ -->
+  <script is:inline>
+    // ---- Theme toggle (Day = Triều Đình / Night = Huyền Tiêu) ----
+    (function() {
+      try {
+        var stored = localStorage.getItem('pht-theme');
+        if (stored === 'dark') document.documentElement.classList.add('dark');
+        if (stored === 'light') document.documentElement.classList.remove('dark');
+      } catch(e) {}
+    })();
+    document.addEventListener('astro:page-load', function() {
+      var tt = document.getElementById('theme-toggle');
+      if (tt && !tt.dataset.bound) {
+        tt.dataset.bound = '1';
+        tt.addEventListener('click', function() {
+          document.documentElement.classList.toggle('dark');
+          try { localStorage.setItem('pht-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light'); } catch(e) {}
+        });
+      }
+
+      // ---- Quotes carousel ----
+      var track = document.getElementById('quote-slides');
+      var dots = document.querySelectorAll('.quote-dot');
+      if (track && dots.length && !track.dataset.bound) {
+        track.dataset.bound = '1';
+        var idx = 0;
+        var total = dots.length;
+        function go(n) {
+          idx = (n + total) % total;
+          track.style.transform = 'translateX(-' + (idx * 100) + '%)';
+          dots.forEach(function(d, i) {
+            d.classList.toggle('bg-primary', i === idx);
+            d.classList.toggle('bg-[var(--border)]', i !== idx);
+          });
+        }
+        dots.forEach(function(d, i) { d.addEventListener('click', function() { go(i); }); });
+        setInterval(function() { go(idx + 1); }, 6000);
+      }
+
+      // ---- Power balance re-roll ----
+      var reroll = document.getElementById('reroll-balance');
+      if (reroll && !reroll.dataset.bound) {
+        reroll.dataset.bound = '1';
+        reroll.addEventListener('click', function() {
+          var rows = document.querySelectorAll('.balance-row');
+          var a = 30 + Math.floor(Math.random() * 30);
+          var b = 30 + Math.floor(Math.random() * 30);
+          var c = 100 - a - b;
+          var vals = [a, b, c];
+          rows.forEach(function(r, i) {
+            var v = vals[i];
+            r.querySelector('.balance-bar').style.width = v + '%';
+            r.querySelector('.balance-pct').textContent = v + '%';
+          });
+        });
+      }
+
+      // ---- Fortune generator ----
+      var fortunes = [
+        { q: 'Quẻ Càn', hex: '☰', text: 'Hôm nay kẻ ngay hướng về ngươi, kẻ gian tránh xa. Giữ lòng sáng, mọi sự an.' },
+        { q: 'Quẻ Khôn', hex: '☷', text: 'Cõi lòng mềm như đất, nhưng bước chân vững như núi. Nhẫn là nước cờ cao nhất.' },
+        { q: 'Quẻ Chấn', hex: '☳', text: 'Sấm động bất ngờ. Có hung tin từ phương Bắc. Đừng vội hành động, hãy lắng nghe.' },
+        { q: 'Quẻ Tốn', hex: '☴', text: 'Gió thổi đâu, ngươi theo đó. Hôm nay là ngày thuận lợi cho hôn nhân và giao kết.' },
+        { q: 'Quẻ Khảm', hex: '☵', text: 'Nước sâu khó đo. Đừng tin lời đường mật — bên dưới là vực thẳm.' },
+        { q: 'Quẻ Ly', hex: '☲', text: 'Lửa bùng cháy. Danh tiếng ngươi lan xa. Nhưng cẩn thận ánh lửa soi rõ cả sự xấu.' },
+        { q: 'Quẻ Cấn', hex: '☶', text: 'Núi đứng yên. Hôm nay không nên dời chân. Kẻ đến sẽ đến, kẻ đi sẽ đi.' },
+        { q: 'Quẻ Đoài', hex: '☱', text: 'Đầm nước vui. Hôm nay vui chuyện cũ, gặp lại cố nhân, lòng dịu lại.' }
+      ];
+      var fbox = document.getElementById('fortune-box');
+      var fbtn = document.getElementById('fortune-btn');
+      if (fbtn && fbox && !fbtn.dataset.bound) {
+        fbtn.dataset.bound = '1';
+        fbtn.addEventListener('click', function() {
+          var f = fortunes[Math.floor(Math.random() * fortunes.length)];
+          fbox.innerHTML = '<div class="text-center w-full">' +
+            '<div class="text-6xl font-serif text-accent mb-3">' + f.hex + '</div>' +
+            '<div class="text-xl font-serif font-semibold mb-3">' + f.q + '</div>' +
+            '<p class="text-base text-foreground/85 italic max-w-xl mx-auto leading-relaxed">' + f.text + '</p>' +
+            '</div>';
+          fbox.classList.add('pulse-soft');
+          setTimeout(function() { fbox.classList.remove('pulse-soft'); }, 1200);
+        });
+      }
+
+      // ---- Music toggle (placeholder — no audio file, just UI state) ----
+      var mt = document.getElementById('music-toggle');
+      if (mt && !mt.dataset.bound) {
+        mt.dataset.bound = '1';
+        mt.addEventListener('click', function() {
+          var on = mt.classList.toggle('is-playing');
+          var onIcon = document.getElementById('icon-music-on');
+          var offIcon = document.getElementById('icon-music-off');
+          if (on) { onIcon.classList.remove('hidden'); offIcon.classList.add('hidden'); }
+          else { onIcon.classList.add('hidden'); offIcon.classList.remove('hidden'); }
+        });
+      }
+
+      // ---- Cursor ink dots (lightweight trail) ----
+      if (!window.__phtInkBound) {
+        window.__phtInkBound = true;
+        var last = 0;
+        document.addEventListener('mousemove', function(e) {
+          var now = Date.now();
+          if (now - last < 60) return;
+          last = now;
+          var d = document.createElement('div');
+          d.className = 'ink-dot';
+          d.style.left = e.clientX + 'px';
+          d.style.top = e.clientY + 'px';
+          document.body.appendChild(d);
+          requestAnimationFrame(function() {
+            d.style.opacity = '0.7';
+            d.style.transform = 'translate(-50%, -50%) scale(2.5)';
+          });
+          setTimeout(function() { d.style.opacity = '0'; }, 30);
+          setTimeout(function() { if (d.parentNode) d.parentNode.removeChild(d); }, 900);
+        });
+      }
+    });
+  </script>
+</Base>

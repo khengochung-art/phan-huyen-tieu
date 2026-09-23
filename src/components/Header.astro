@@ -1,0 +1,72 @@
+---
+const links = [
+  { href: "/lore", label: "Cốt Truyện" },
+  { href: "/roles", label: "Thân Phận" },
+  { href: "/factions", label: "Phe Phái" },
+  { href: "/rules", label: "Quy Định" },
+  { href: "/gallery", label: "Sự Kiện" }
+];
+const current = Astro.url.pathname;
+---
+<nav class="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+    <a href="/" class="flex items-center gap-3 group">
+      <span class="text-3xl font-serif text-primary transition-transform group-hover:scale-110">梵</span>
+      <span class="hidden sm:inline text-lg md:text-xl font-serif font-semibold tracking-wide">Phạn Huyền Tiêu</span>
+    </a>
+    <div class="hidden lg:flex items-center gap-7 text-sm font-medium">
+      {links.map((l) => (
+        <a
+          href={l.href}
+          class={`hover:text-primary transition ${current === l.href ? "text-primary" : "text-foreground"}`}
+        >{l.label}</a>
+      ))}
+      <a href="/register" class="px-4 py-2 bg-primary text-primary-foreground rounded hover:scale-105 transition">Gia Nhập</a>
+    </div>
+    <div class="flex items-center gap-2">
+      <button id="theme-toggle" aria-label="Chuyển chế độ Ngày/Đêm" class="p-2 border border-border rounded hover:bg-secondary transition" title="Chuyển Ngày / Đêm">
+        <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button id="music-toggle" aria-label="Bật/tắt nhạc nền" class="p-2 border border-border rounded hover:bg-secondary transition" title="Nhạc cổ phong (mặc định tắt)">
+        <svg id="icon-music-off" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM21 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/></svg>
+        <svg id="icon-music-on" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/></svg>
+      </button>
+      <a href="/register" class="lg:hidden px-3 py-1.5 bg-primary text-primary-foreground text-xs font-medium rounded">Gia Nhập</a>
+    </div>
+  </div>
+</nav>
+
+<script is:inline>
+  (function() {
+    try {
+      var stored = localStorage.getItem('pht-theme');
+      if (stored === 'dark') document.documentElement.classList.add('dark');
+      if (stored === 'light') document.documentElement.classList.remove('dark');
+    } catch(e) {}
+  })();
+
+  document.addEventListener('astro:page-load', function() {
+    var tt = document.getElementById('theme-toggle');
+    if (tt && !tt.dataset.bound) {
+      tt.dataset.bound = '1';
+      tt.addEventListener('click', function() {
+        document.documentElement.classList.toggle('dark');
+        try { localStorage.setItem('pht-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light'); } catch(e) {}
+      });
+    }
+
+    var mt = document.getElementById('music-toggle');
+    if (mt && !mt.dataset.bound) {
+      mt.dataset.bound = '1';
+      mt.addEventListener('click', function() {
+        var on = mt.classList.toggle('is-playing');
+        var onIcon = document.getElementById('icon-music-on');
+        var offIcon = document.getElementById('icon-music-off');
+        if (!onIcon || !offIcon) return;
+        if (on) { onIcon.classList.remove('hidden'); offIcon.classList.add('hidden'); }
+        else { onIcon.classList.add('hidden'); offIcon.classList.remove('hidden'); }
+      });
+    }
+  });
+</script>
